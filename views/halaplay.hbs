@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Halaplay</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+  <div id="div">ABC</div>
+  <form id="invoiceForm">
+    <div class="form-group">
+      <label for="Date">Date:</label>
+      <input type="Date" class="form-control" id="Date" name="date" placeholder="Enter Date" >
+    </div>
+    <div class="form-group">
+      <label for="amount">Amount:</label>
+      <input type="text" class="form-control" id="amount" name="amount" placeholder="Enter Amount" >
+    </div>
+    <div class="form-group">
+      <label for="paid">Paid To:</label>
+      <input type="text" class="form-control" id="paidTo" name="paidTo" placeholder="Enter Name" >
+    </div>
+    <div class="form-group">
+      <label for="txn.id">Txn.Id:</label>
+      <input type="text" class="form-control" id="txnId" name="txnId" placeholder="Enter Txn.Id" >
+    </div>
+    
+  </form>
+  <button class="btn btn-default" onclick="downloadInvoice(event)">Submit</button>
+</div>
+<script>
+    function downloadInvoice(event){
+        event.preventDefault();
+        $.ajax({url: "/download?" + $('form').serialize(), success: function(result){
+           var blob=new Blob([result]);
+            var link=document.createElement('a');
+            link.href=window.URL.createObjectURL(blob);
+            link.download="download.pdf";
+            link.click();
+        }});
+    }
+</script>
+
+</body>
+</html>
