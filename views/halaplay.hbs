@@ -12,7 +12,7 @@
 
 <div class="container">
   <div id="div">ABC</div>
-  <form id="invoiceForm">
+  <form id="invoiceForm" action="/download">
     <div class="form-group">
       <label for="Date">Date:</label>
       <input type="Date" class="form-control" id="Date" name="date" placeholder="Enter Date" >
@@ -29,22 +29,9 @@
       <label for="txn.id">Txn.Id:</label>
       <input type="text" class="form-control" id="txnId" name="txnId" placeholder="Enter Txn.Id" >
     </div>
-    
+    <button class="btn btn-default">Download</button>
   </form>
-  <button class="btn btn-default" onclick="downloadInvoice(event)">Submit</button>
+  
 </div>
-<script>
-    function downloadInvoice(event){
-        event.preventDefault();
-        $.ajax({url: "/download?" + $('form').serialize(), success: function(result){
-           var blob=new Blob([result]);
-            var link=document.createElement('a');
-            link.href=window.URL.createObjectURL(blob);
-            link.download="download.pdf";
-            link.click();
-        }});
-    }
-</script>
-
 </body>
 </html>
