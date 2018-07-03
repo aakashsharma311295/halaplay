@@ -1,6 +1,7 @@
 const express = require("express");
 const hbs = require("hbs");
 var $ = require('jsrender');
+var path = require('path');
 
 var app = express();
 
@@ -28,13 +29,19 @@ app.get("/download",(req,res) =>{
     var html = tmpl.render(options);
     pdf.create(html, options).toFile('./invoice.pdf', function(err, data) {
         if (err) return console.log(err);
-        var path = require('path');     
-        var file = path.join(__dirname, 'invoice.pdf'); 
-        console.log('file', file);
-        fs.readFile(file, function (err,data){
-         response.contentType("application/pdf");
-         response.send(data);
-      });
+
+
+
+            var file = __dirname + '/invoice.pdf';
+            console.log(file);
+            var filename = path.basename(file);
+
+            res.setHeader('Content-disposition', 'attachment; filename=' + filename);
+            res.setHeader('Content-type', 'application/pdf');
+
+            var filestream = fs.createReadStream(file);
+            filestream.pipe(res);
+
     });
  
 });
